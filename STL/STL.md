@@ -9,7 +9,7 @@
 - 适配器（Adapters）
 - 仿函数（Functors）
 
-![image-20220704115127261](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704115127261.png)
+![image](https://user-images.githubusercontent.com/106053649/177124202-7735c921-67da-4269-a624-9b7c7976c57b.png)
 
 - 通常使用STL，第一个直接接触容器，容器要放东西，东西需要占内存
 - 容器使使用者无需关注内存，只需要把东西一个一个放进去，背后是分配器的支持
