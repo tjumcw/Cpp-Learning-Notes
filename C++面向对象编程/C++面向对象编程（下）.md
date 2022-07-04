@@ -4,7 +4,7 @@
 
 - 针对模板，面对独特的类型要做特殊的设计（比如针对某个模板参数，有更高效的仅适合该类型的实现方式）
 
-![image-20220703211224858](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220703211224858.png)
+![image](https://user-images.githubusercontent.com/106053649/177123860-7d97bed9-8d4a-4e5b-abb3-c0d9017d99a5.png)
 
 - 针对hash这个struct，模板参数为key（随意指定无所谓），当key为char，int，long时，有其特化部分
 
