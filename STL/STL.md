@@ -151,7 +151,7 @@
 
 - Iterator_Traits能区分传进来的迭代器是class还是普通的指针，相当于一个中间层，实现间接问
 
-![image-20220704172126085](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704172126085.png)
+![image](https://user-images.githubusercontent.com/106053649/177165334-1817aebc-d675-46c5-a46b-4d3a08a633c6.png)
 
 - 根据图片，可知iterator_traits作为中间层，对指针类型做了偏特化，实现算法提问形式的一致性（无论是普通指针还是设计为类迭代器）
 
