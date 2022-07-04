@@ -192,7 +192,7 @@
 
 - 完整的iterator_traits如下
 
-![image-20220704173522058](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704173522058.png)
+![image](https://user-images.githubusercontent.com/106053649/177165485-e6c613e0-9ddd-4fd0-a14a-afd913ceee6a.png)
 
 - 可见，对于class型的迭代器，iterator_traits相当于就是简单的重命名
 - 对于指针型的迭代器，iterator_traits根据其指针所指向的类型给出回答并命名为一致形式
@@ -297,7 +297,7 @@
 
 - 红黑树提供遍历操作以及迭代器，按正常规则（++iterator）遍历，能获得排序状态的元素
 
-![image-20220704191822796](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704191822796.png)
+![image](https://user-images.githubusercontent.com/106053649/177165585-543721a9-7bce-47fd-9eb1-7f4f16f49036.png)
 
 - begin记录最坐标的元素，end记录最右边的元素
 - header类似双向链表中的end空节点，是为了实现方便刻意制造出来的
@@ -412,7 +412,7 @@
 
 - 5种类型的类层次结构如下
 
-![image-20220704212122039](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704212122039.png)
+![image](https://user-images.githubusercontent.com/106053649/177165706-3554838a-0c9e-4ecf-bd87-e5e7ce9d0db7.png)
 
 - 同样的算法，对于不同的iterator_category，会调用不同的子函数实现功能，性能相差极大
 
