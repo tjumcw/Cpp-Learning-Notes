@@ -151,7 +151,7 @@
 
 - Iterator_Traits能区分传进来的迭代器是class还是普通的指针，相当于一个中间层，实现间接问
 
-![image](https://user-images.githubusercontent.com/106053649/177165334-1817aebc-d675-46c5-a46b-4d3a08a633c6.png)
+![image-20220704172126085](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704172126085.png)
 
 - 根据图片，可知iterator_traits作为中间层，对指针类型做了偏特化，实现算法提问形式的一致性（无论是普通指针还是设计为类迭代器）
 
@@ -192,7 +192,7 @@
 
 - 完整的iterator_traits如下
 
-![image](https://user-images.githubusercontent.com/106053649/177165485-e6c613e0-9ddd-4fd0-a14a-afd913ceee6a.png)
+![image-20220704173522058](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704173522058.png)
 
 - 可见，对于class型的迭代器，iterator_traits相当于就是简单的重命名
 - 对于指针型的迭代器，iterator_traits根据其指针所指向的类型给出回答并命名为一致形式
@@ -297,7 +297,7 @@
 
 - 红黑树提供遍历操作以及迭代器，按正常规则（++iterator）遍历，能获得排序状态的元素
 
-![image](https://user-images.githubusercontent.com/106053649/177165585-543721a9-7bce-47fd-9eb1-7f4f16f49036.png)
+![image-20220704191822796](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704191822796.png)
 
 - begin记录最坐标的元素，end记录最右边的元素
 - header类似双向链表中的end空节点，是为了实现方便刻意制造出来的
@@ -363,8 +363,9 @@
 - bucket指的是数组部分的每个位置，每个bucket都是一个链表
 - 如果元素个数大于bucket个数时（一般有些bucket为空，有些bucket元素很多），需要rehashing
 - rehashing会扩充bucket，回去寻找一开始bucket数量2倍附近的质数（默认一开始53）
-  - 开销很大，不仅需要像vector那样全部搬过去，还要重新计算每个元素应该在哪个bucket上
-
+  
+- 开销很大，不仅需要像vector那样全部搬过去，还要重新计算每个元素应该在哪个bucket上
+  
 - hashtable的模板参数
 
 - ```c++
@@ -412,7 +413,7 @@
 
 - 5种类型的类层次结构如下
 
-![image](https://user-images.githubusercontent.com/106053649/177165706-3554838a-0c9e-4ecf-bd87-e5e7ce9d0db7.png)
+![image-20220704212122039](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704212122039.png)
 
 - 同样的算法，对于不同的iterator_category，会调用不同的子函数实现功能，性能相差极大
 
@@ -426,3 +427,119 @@
   ```
 
 - 模板参数表示随意给什么类型，命名也随意（一般用T），这里用明明来暗示迭代器类型
+
+
+
+#### 算法示例accumulate
+
+- 有2种版本，一种是默认版本
+
+- ```c++
+  template<class InputIterator, class T>
+  T accumulate(InputIterator first, InputIterator last, T init){
+      for(; first != last; ++first){
+          init = init + *first;	//将初值累加到每个元素上返回
+      }
+      return init;
+  }
+  ```
+
+- 一种是给函数功能的版本（全部函数，仿函数都可以），着重关注该实现方式（有助于自己理解并应用）
+
+- ```c++
+  template<class InputIterator, class T>
+  T accumulate(InputIterator first, InputIterator last, T init, BinaryOperation binary_op){
+      for(; first != last; ++first){
+          //对元素累计算至初值上，每作用完一个元素init会变化
+          init = binary_op(init, first);	
+      }
+      return init;
+  }
+  ```
+
+- BinaryOperation表示两个操作数的函数，binary_op(init, first)给出了仿函数实际调用的形式
+
+  - binary_op是一个函数对象，重载了()，以此来看binary_op(init, first)能加深理解
+  - 类比对一个对象重载+，若调用：对象名+某个类型，表示对该对象执行重载+函数的内部操作
+  - 这里类似，无非是一个不需要其他操作数的重载，表示执行重载()函数的内部内容，就会把第二个小括号的参数传进去进行特定操作（实现了函数功能）
+
+
+
+#### 仿函数functors
+
+- 仿函数为算法服务，为算法提供一些特定的操作准则（算法的第二版本）
+- 必须重载()，自己写的functor如果想要融入STL，必须选适当的类型继承
+  - 这样才能回答Function Adapter（函数适配器）提出的问题
+
+
+
+#### 适配器Adapter
+
+- 函数适配器，容器适配器，迭代器适配器
+- 实现适配，比如A是使用者，B隐藏在幕后，A就是Adapter，需要取用B的功能
+  - 要么A继承B，要么A组合B，适配器的实现都是组合的方式
+- 容器适配器
+  - stack和queue组合了一个deque
+
+- 函数适配器
+  - 比如less<int>()，原先是比较参数x和y的大小
+  - 通过bind2nd(less<int>(), 40)，绑定了第二个参数y为40，具体功能为比较x和40大小，小于40
+  - 再比如not1，如not1(bind2nd(less<int>(), 40))，继续修饰上文的语义，整体功能为大于40
+
+- 迭代器适配器
+  - reverse_iterator（反向迭代器，以普通迭代器改造而得到）
+
+
+
+#### 函数适配器中的bind（单独拿出来讲）
+
+- std::bind可以绑定
+  - 函数
+  - 函数对象
+  - 成员函数，占位符1必须是某个object地址
+  - 成员变量，占位符1必须是某个object地址 
+
+- bind函数示例如下：
+
+- ```c++
+  using namespace std::placeholders;
+  
+  double my_divide(double x, double y){
+      { return x / y; }
+  }
+  
+  auto fn_five = bind(my_divide, 10, 2);			//	returns 10 / 2
+  cout << fn_five() << '\n';						//	5
+  
+  auto fn_half = bind(my_divide, _1, 2);			//	return x / 2,只绑定了第二个参数
+  cout << fn_half(10) << '\n';					//	5
+  
+  auto fn_invert = bind(my_divide, _2, _1);		//	return y / x,两个参数都没绑定，并且交换了顺序
+  cout << fn_invert(10, 2) << '\n';				//	0.2
+  
+  auto fn_rounding = bind<int>(my_divide, _1, _2)	//	return int(x / y),两个参数都没绑定,且指定了返回值类型
+  cout << fn_rounding(10, 3) << '\n';				//	3
+  ```
+
+- bind成员函数以及成员变量示例如下：
+
+- ```c++
+  using namespace std::placeholders;
+  
+  struct MyPair{
+  	double a, b;
+      double multiply() { return a * b; }
+  };
+  
+  MyPair ten_two{10, 2};								//member function其实有个参数:this
+  													
+  auto bound_memfn = bind(&MyPair::multiply, _1);		//	return x.multiply(),未绑定第一个参数
+  cout << bound_memfn(&ten_two) << '\n';				//	20,传第一个参数，即对象地址,&MyPair::multiply表示取成员函数地址
+  
+  auto bound_memdata = bind(&MyPair::a, &ten_two);	//	return ten_two.a	
+  cout << bound_memdata() << '\n';					//	10
+  
+  auto bound_memdata2 = bind(&MyPair::b, _1);			//	return x.a	
+  cout << bound_memdata2(&ten_two) << '\n';			//	10,传第一个参数，即对象地址
+  ```
+
