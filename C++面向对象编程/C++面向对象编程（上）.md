@@ -145,7 +145,7 @@
 - 首先回顾String类，其成员只有一个char*类型指针，指向的是new出来的char数组
 - 给出关于delete[]及delete对于String[]的对比
 
-![image](https://user-images.githubusercontent.com/106053649/177123628-abe65d49-b14b-41dd-9694-c7dd790b460c.png)
+![image](https://user-images.githubusercontent.com/106053649/177124002-37095bc4-0354-4a83-b2ca-137648e204ee.png)
 
 
 
