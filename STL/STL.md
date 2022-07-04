@@ -151,7 +151,7 @@
 
 - Iterator_Traits能区分传进来的迭代器是class还是普通的指针，相当于一个中间层，实现间接问
 
-![image-20220704172126085](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704172126085.png)
+![image](https://user-images.githubusercontent.com/106053649/177180049-d4290eef-0866-4d52-8e10-e94dca862a02.png)
 
 - 根据图片，可知iterator_traits作为中间层，对指针类型做了偏特化，实现算法提问形式的一致性（无论是普通指针还是设计为类迭代器）
 
@@ -192,7 +192,7 @@
 
 - 完整的iterator_traits如下
 
-![image-20220704173522058](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704173522058.png)
+![image](https://user-images.githubusercontent.com/106053649/177180099-3f264bec-73e8-4098-9cb7-323eedf2b214.png)
 
 - 可见，对于class型的迭代器，iterator_traits相当于就是简单的重命名
 - 对于指针型的迭代器，iterator_traits根据其指针所指向的类型给出回答并命名为一致形式
@@ -297,7 +297,7 @@
 
 - 红黑树提供遍历操作以及迭代器，按正常规则（++iterator）遍历，能获得排序状态的元素
 
-![image-20220704191822796](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704191822796.png)
+![image](https://user-images.githubusercontent.com/106053649/177180146-c8b50a01-b20d-4976-a438-cfc95a48d576.png)
 
 - begin记录最坐标的元素，end记录最右边的元素
 - header类似双向链表中的end空节点，是为了实现方便刻意制造出来的
@@ -413,7 +413,7 @@
 
 - 5种类型的类层次结构如下
 
-![image-20220704212122039](C:\Users\mcw\AppData\Roaming\Typora\typora-user-images\image-20220704212122039.png)
+![image](https://user-images.githubusercontent.com/106053649/177180193-39a2516e-a3b2-47df-9023-2e113b2e33bb.png)
 
 - 同样的算法，对于不同的iterator_category，会调用不同的子函数实现功能，性能相差极大
 
