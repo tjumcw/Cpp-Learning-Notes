@@ -256,6 +256,18 @@
   array<int, 10> myArray;
   ```
 
+- 其类的关键细节如下：
+
+- ```c++
+  template<typename _Tp, std::size_t _Nm>
+  struct array{
+      typedef _Tp value_type;
+      typedef value_type* iterator;				//可见其迭代器就是其模板参数对应的指针
+      
+      value_type _M_instance[_Nm ? _Nm : 1];		//其结构体内唯一的成员变量，是一个_Tp类型的，且大小为_Nm为数组(_Nm为0则大小为1)
+  }
+  ```
+
 
 
 #### 容器deque
