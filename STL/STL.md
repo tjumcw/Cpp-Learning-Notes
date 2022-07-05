@@ -543,3 +543,75 @@
   cout << bound_memdata2(&ten_two) << '\n';			//	10,传第一个参数，即对象地址
   ```
 
+
+
+#### 元组tuple
+
+- 声明、初始化
+
+- ```c++
+  tuple<string, int, int, complex<double>>t;		//声明
+  tuple<int, float, string>t1(41, 6.3, "nico");	//声明加初始化
+  auto t2 = make_tuple(22, 44, "stacy");			//实参自动类型推导
+  ```
+
+- 取元素，赋值
+
+- ```c++
+  get<0>(t1);					//取出tuple对象t1的第0个元素
+  get<1>(t1) = get<1>(t2)		//将t2的第1个元素赋值给t1的第1个元素
+  ```
+
+- tuple利用可变参数作为模板参数实现，将一组数据分为1和n-1，并一直递归
+
+- ```c++
+  template<typename Head, typename... Tail>
+  class tuple<Head, Tail...> : private tuple<Tail...>{		//继承自己的尾部部分部分，如一包5个，就继承4个的自己
+      typedef tuple<Tail...> inherited;
+  public:
+      tuple(){}
+      tuple(Head v, Tail... vtail):m_head(v), inherited(vtail...){}	//有参构造，取出第一个元素给成员变量m_head,把剩下部分交给继承,递归
+      typename Head::type head() { return m_head; }
+      inherited& tail() {return *this}
+  protected:
+      Head m_head;		//Head的字段，即元组的第一个元素，继承了剩下的部分
+  }
+  ```
+
+- 其中，inherited(vtail...)会呼叫基类的构造函数并赋予参数（通过initalization list初始化列表的方式）
+
+- 递归到头必然会有一个空的tuple，所以设计一个偏特化的空模板类，其中还有一个只有一包可变参数的基类（没有一开始的一个）：
+
+- ```c++
+  template<typename... Values> calss tuple;	//只有一包参数基类，供2个模板参数的tuple继承
+  template<>class tuple<>{};					//空类
+  ```
+
+- 使用示例：
+
+- ```c++
+  tuple<int, float, string> t(41, 6.3, "nico");
+  t.head()			//取得41
+  t.tail();			//取得剩下的一包，即6.3与"nico"的组合
+  t.tail().head();	//取得6.3
+  ```
+
+  
+
+#### type traits（GNU 2.9）后续变了但思想一致
+
+![image-20220705095052430](C:\Users\tjumc\AppData\Roaming\Typora\typora-user-images\image-20220705095052430.png)
+
+- 回答关于类型的一些问题，默认都把它设成false，如提问是否有不重要的拷贝构造函数，默认是_false_type即没有不重要，表示重要
+
+- 对于简单的基本类型有其特化版本（如基本类型int，double），其三大件都是不重要的，不需要自己写特别的函数
+
+- ```c++
+  __type_traits<Foo>::has_trivial_destructor		//提问方式，对Foo类的析构函数是否重要提问（编译通过即得到了答案）
+  ```
+
+
+
+#### cout
+
+- 是一个对象（不可能直接拿类来用，肯定是对象）
