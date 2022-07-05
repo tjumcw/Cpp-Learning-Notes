@@ -600,7 +600,7 @@
 
 #### type traits（GNU 2.9）后续变了但思想一致
 
-![image-20220705095052430](C:\Users\tjumc\AppData\Roaming\Typora\typora-user-images\image-20220705095052430.png)
+![image](https://user-images.githubusercontent.com/106053649/177235503-633f70cf-a5b8-48bc-9609-55d77e930a55.png)
 
 - 回答关于类型的一些问题，默认都把它设成false，如提问是否有不重要的拷贝构造函数，默认是_false_type即没有不重要，表示重要
 
