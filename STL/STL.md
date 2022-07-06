@@ -583,8 +583,8 @@
   public:
       tuple(){}
       tuple(Head v, Tail... vtail):m_head(v), inherited(vtail...){}	//有参构造，取出第一个元素给成员变量m_head,把剩下部分交给继承,递归
-      typename Head::type head() { return m_head; }
-      inherited& tail() {return *this}
+      typename Head::type head() { return m_head; }//这句话有问题，对照示例传进来Head为int，int没有什么type的定义
+      inherited& tail() {return *this}			 //在后面的视频里，改为Head head(){ return m_head; }
   protected:
       Head m_head;		//Head的字段，即元组的第一个元素，继承了剩下的部分
   }
