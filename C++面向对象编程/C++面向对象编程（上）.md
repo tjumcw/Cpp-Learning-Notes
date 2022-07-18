@@ -90,10 +90,51 @@
       ~String();
   private:
       char* m_data;
+  };
+  String::String(const char* cstr){
+    if(cstr){
+          m_data = new char[strlen(cstr) + 1];
+          strcpy(m_data, cstr);
+      }else{
+          m_data = new char[1];
+          *m_data = '\0';
+      }
+  }
+  String::~String(){
+      delete[] m_data;
+  }
+  String::String(const String& str){
+      m_data = new char[strlen(str.m_data) + 1];
+      strcpy(m_data, str.m_data);
+  }
+  String& String::operator=(const String& str){
+      if(hits == &str){
+          return *this;
+      }
+      delete[] m_data;
+      m_data = new char[strlen(str.m_data) + 1];
+      strcpy(m_data, str.m_data);
+      return *this;
   }
   ```
+  
+- 拷贝构造和拷贝赋值是为了防止浅拷贝的出现
 
-- 为了防止浅拷贝的出现
+- 拷贝构造和拷贝赋值的区分
+
+```c++
+String s1("hello");	//默认构造
+String s2(s1);		//拷贝构造
+String s2 = s1;		//拷贝构造，是在新创建对象时调用的，这是声明语句（前面有String）
+s2 = s1;			//拷贝赋值，因为s2对象已经存在了
+```
+
+- 拷贝赋值的流程：
+  - 考虑两个对象（都是已经存在的），需要把右边的对象赋值给左边
+  - 需要先清空左边的对象
+  - 再创建一块和右边对象占用空间一样大的空间
+  - 最后把左边的东西赋值给左边
+  - 需要检查自我赋值，未检查若是发生自我赋值，清空自己后就把唯一的对象清空了
 
 
 
